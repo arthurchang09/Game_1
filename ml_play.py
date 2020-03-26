@@ -1,4 +1,4 @@
-"""
+""""
 The template of the main script of the machine learning process
 """
 
@@ -22,7 +22,11 @@ def ml_loop():
     # === Here is the execution order of the loop === #
     # 1. Put the initialization code here.
     ball_served = False
-
+    pre_Ball_x=95
+    pre_Ball_y=400
+    m=0
+    platform_x=0
+    new_x=0
     # 2. Inform the game process that ml process is ready before start the loop.
     comm.ml_ready()
 
@@ -72,3 +76,4 @@ def ml_loop():
                 comm.send_instruction(scene_info.frame, PlatformAction.NONE)
             pre_Ball_x=ball_x
             pre_Ball_y=ball_y
+            
