@@ -67,7 +67,7 @@ def ml_loop():
                     new_x=-new_x
                 elif new_x>200:
                     new_x=400-new_x
-            #new_x-=25
+            new_x-=25
             if new_x>platform_x :
                 comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
             elif new_x<=platform_x:
