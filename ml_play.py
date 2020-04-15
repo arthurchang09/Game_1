@@ -113,7 +113,7 @@ def down(x,y,Vx,scene_info):
             y+=7
             if x>=193:
                 x=400-x
-                Vx=-7
+                Vx=-Vx
                 continue
             for br in scene_info.bricks:
                 if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
@@ -124,7 +124,7 @@ def down(x,y,Vx,scene_info):
             y+=7
             if x<=0:
                 x=-x
-                Vx=7
+                Vx=-Vx
                 continue
             for br in scene_info.bricks:
                 if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
@@ -138,7 +138,7 @@ def up(x,y,Vx,scene_info):
             y-=7
             if x>=193:
                 x=400-x
-                Vx=-7
+                Vx=-Vx
                 continue
             for br in scene_info.bricks:
                    if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
@@ -152,7 +152,7 @@ def up(x,y,Vx,scene_info):
             y-=7
             if x<=0:
                 x=-x
-                Vx=7
+                Vx=-Vx
                 continue
             for br in scene_info.bricks:
                    if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
