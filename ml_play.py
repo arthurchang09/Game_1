@@ -97,14 +97,14 @@ def ml_loop():
                     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
                 elif platform_x+30<newp:
                     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
-           
+           """
             else:
                 newp=up(ball_x,ball_y,Vx,scene_info)
                 if platform_x+10>newp:
                     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
                 elif platform_x+30<newp:
                     comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
-            
+            """
             pre_Ball_x=ball_x
             pre_Ball_y=ball_y
 def down(x,y,Vx,scene_info):
