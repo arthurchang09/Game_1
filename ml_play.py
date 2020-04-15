@@ -69,7 +69,7 @@ def ml_loop():
             Vx=ball_x-pre_Ball_x
             Vy=ball_y-pre_Ball_y
             """
-            """
+            
             if Vx==0:
                 Vx=0.001
             m=Vy/Vx
@@ -89,6 +89,7 @@ def ml_loop():
                 comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
             else:
                 comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+            
             """
             if Vy>0:
                 newp=down(ball_x,ball_y,Vx,scene_info)
@@ -162,3 +163,4 @@ def up(x,y,Vx,scene_info):
                            Vx=-Vx
                            break
     return x               
+    """
