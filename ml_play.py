@@ -105,7 +105,9 @@ def ml_loop():
             pre_Ball_x=ball_x
             pre_Ball_y=ball_y
 def down(x,y,Vx,scene_info):
-    while y<400:
+    while true:
+        if y>400:
+            break
         if Vx>=0:
             x+=7
             y+=7
