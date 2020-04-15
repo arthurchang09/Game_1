@@ -1,4 +1,4 @@
-""""
+"""
 The template of the main script of the machine learning process
 """
 
@@ -25,8 +25,6 @@ def ml_loop():
     pre_Ball_x=95
     pre_Ball_y=400
     m=0
-    platform_x=0
-    new_x=0
     # 2. Inform the game process that ml process is ready before start the loop.
     comm.ml_ready()
 
@@ -41,27 +39,44 @@ def ml_loop():
             scene_info.status == GameStatus.GAME_PASS:
             # Do some stuff if needed
             ball_served = False
-
+            pre_Ball_x=scene_info.ball[0]
+            pre_ball_y=scene_info.ball[1]
+            print(pre_Ball_x,pre_Ball_y)
             # 3.2.1. Inform the game process that ml process is ready
             comm.ml_ready()
             continue
 
         # 3.3. Put the code here to handle the scene information
-
+        
+        ball_x=scene_info.ball[0]
+        ball_y=scene_info.ball[1]
+        platform_x=scene_info.platform[0]
+        Vx=ball_x-pre_Ball_x
+        Vy=ball_y-pre_Ball_y
+        
         # 3.4. Send the instruction for this frame to the game process
         if not ball_served:
-            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_LEFT)
+            #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+            #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+            comm.send_instruction(scene_info.frame, PlatformAction.SERVE_TO_RIGHT)
             ball_served = True
         else:
             #comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
-            ball_x=scene_info.ball[0];
-            ball_y=scene_info.ball[1];
-            platform_x=scene_info.platform[0];
+            """
+            ball_x=scene_info.ball[0]
+            ball_y=scene_info.ball[1]
+            platform_x=scene_info.platform[0]
             Vx=ball_x-pre_Ball_x
             Vy=ball_y-pre_Ball_y
+            """
+            """
+            if Vx==0:
+                Vx=0.001
             m=Vy/Vx
+            if m==0:
+                m=0.001
+            
             new_x=((400-ball_y)/m)+ball_x
-            #print(new_x)
             while new_x<0 or new_x>200 :
                 if new_x<0 :
                     new_x=-new_x
@@ -74,6 +89,74 @@ def ml_loop():
                 comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
             else:
                 comm.send_instruction(scene_info.frame, PlatformAction.NONE)
+            """
+            if Vy>0:
+                newp=down(ball_x,ball_y,Vx,scene_info)
+                if platform_x+15>newp:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                elif platform_x+15<newp:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
+            else:
+                newp=up(ball_x,ball_y,Vx,scene_info)
+                if platform_x+15>newp:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_LEFT)
+                elif platform_x+15<newp:
+                    comm.send_instruction(scene_info.frame, PlatformAction.MOVE_RIGHT)
             pre_Ball_x=ball_x
             pre_Ball_y=ball_y
-            
+def down(x,y,Vx,scene_info):
+    while y<400:
+        if Vx>=0:
+            x+=7
+            y+=7
+            if x>=193:
+                x=400-x
+                Vx=-7
+                continue
+            for br in scene_info.bricks:
+                if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
+                    Vx=-Vx
+                    break
+        else:
+            x-=7
+            y+=7
+            if x<=0:
+                x=-x
+                Vx=7
+                continue
+            for br in scene_info.bricks:
+                if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
+                    Vx=-Vx
+                    break
+    return x
+def up(x,y,Vx,scene_info):
+    while y>0:
+        if Vx>0:
+            x+=7
+            y-=7
+            if x>=193:
+                x=400-x
+                Vx=-7
+                continue
+            for br in scene_info.bricks:
+                   if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
+                       if y+7>br[1]+10: #hit bitton
+                           return down(x,y,Vx,scene_info)
+                       else:
+                           Vx=-Vx
+                           break
+        else:
+            x-=7
+            y-=7
+            if x<=0:
+                x=-x
+                Vx=7
+                continue
+            for br in scene_info.bricks:
+                   if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
+                       if y+7>br[1]+10:
+                           return down(x,y,Vx,scene_info)
+                       else:
+                           Vx=-Vx
+                           break
+    return x               
