@@ -120,7 +120,10 @@ def down(x,y,Vx,scene_info):
                 continue
             for br in scene_info.bricks:
                 if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
-                    Vx=-Vx
+                    if y-7<br[1]:
+                        return up(x,y,Vx,scene_info)
+                    else:
+                        Vx=-Vx
                     break
         else:
             x-=7
@@ -131,7 +134,10 @@ def down(x,y,Vx,scene_info):
                 continue
             for br in scene_info.bricks:
                 if x>br[0] and x<br[0]+25 and y<br[1]+10 and y>br[1]-5:
-                    Vx=-Vx
+                    if y-7<br[1]:
+                        return up(x,y,Vx,scene_info)
+                    else:
+                        Vx=-Vx
                     break
     return x
 
