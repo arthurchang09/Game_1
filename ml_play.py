@@ -40,9 +40,11 @@ def ml_loop(side: str):
     filename=path.join(path.dirname(__file__), 'save', 'SVM_C.pickle')
     with open(filename, 'rb') as file:
         p1 = pickle.load(file)
+    """
     filename1=path.join(path.dirname(__file__), 'save', 'SVM_C_2P.pickle')
     with open(filename1, 'rb') as file:
         p2 = pickle.load(file)
+    """
     pre_blocker=(90,240)
     # 2. Inform the game process that ml process is ready
     comm.ml_ready()
@@ -164,13 +166,6 @@ def ml_loop(side: str):
                 if y1==0:
                     comm.send_to_game({"frame": scene_info["frame"], "command": "NONE"})
                 elif y1==1:
-                    comm.send_to_game({"frame": scene_info["frame"], "command": "MOVE_LEFT"})
-                else:
-                    comm.send_to_game({"frame": scene_info["frame"], "command": "MOVE_RIGHT"})
-            else:
-                if y2==0:
-                    comm.send_to_game({"frame": scene_info["frame"], "command": "NONE"})
-                elif y2==1:
                     comm.send_to_game({"frame": scene_info["frame"], "command": "MOVE_LEFT"})
                 else:
                     comm.send_to_game({"frame": scene_info["frame"], "command": "MOVE_RIGHT"})
